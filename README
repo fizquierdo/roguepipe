@@ -1,0 +1,3 @@
+# Iteratively prune alignment until constrained and unconstrained searches yield similar topologies
+# See toy example with:
+./run_example.sh
