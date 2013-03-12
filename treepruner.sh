@@ -2,9 +2,10 @@
 
 if [ $# -ne 3 ]
 then
-  echo "Usage: `basename $0` iter_id aln tree_constain"
-  exit
+    echo "Usage: `basename $0` iter_id aln tree_constain"
+    exit
 fi
+
 iter_id=$1
 aln=$2
 cons_tree=$3
@@ -48,11 +49,10 @@ fi
 
 echo "trying to find problematic taxa "
 
-
 iterFolder=iteration_no$(($iter_id-1)) 
 
 normMLTree=$( ls ./$iterFolder/search_normal/RAxML_bestTree*)
-constMLTree=$( ls ./$iterFolder/search_normal/RAxML_bestTree*)
+constMLTree=$( ls ./$iterFolder/search_constrained/RAxML_bestTree*)
 
 if [  $(ls $normMLTree | wc -l  ) -ne 1 -o $(ls $constMLTree | wc -l  ) -ne 1 ] ; then 
     echo "could not find best trees from constraint and unconstraint searches "
@@ -67,10 +67,9 @@ cat $normMLTree $constMLTree > bothTrees
 \cp new_constraint/problematic.txt blacklist.txt
 \cp new_constraint/newConstraint.txt  $cons_tree
 
-
-
 if [ $(cat $cons_tree | wc -l  ) -ne 1 ] ; then
     echo "could not create new constraint tree "
+    rm blacklist.txt
     exit
 fi
 
@@ -79,6 +78,7 @@ blacklist=blacklist.txt
 # some cleanup 
 rm -rf new_constraint
 rm bothTrees
+
 
 if [ $(cat $blacklist | wc -l ) -eq 0  ]; then
     echo "could NOT find any incongruent taxa. Stopping the search."
