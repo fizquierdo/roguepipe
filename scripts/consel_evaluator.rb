@@ -19,7 +19,9 @@ File.open(consellog).each_line do |l|
     end
   end
 end
-puts "Parsed ranking " + ranking.to_s
+puts "Parsed ranking " + ranking.join(',')
+puts "Ranking first half " + ranking.slice(0,num_runs).join(',')
+puts "Ranking second half " + ranking.slice(num_runs, num_runs).join(',')
 # See if the 2 groups have mixed in the ranking
 expected_set = (1..num_runs).to_a
 best_ranking_set = ranking.slice(0,num_runs)
